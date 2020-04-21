@@ -1,0 +1,88 @@
+# This is a sample build configuration for Docker.
+# Check our guides at https://confluence.atlassian.com/x/O1toN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build env.
+image: atlassian/default-image:2
+options:
+  size: 2x
+pipelines:
+  pull-requests:
+    '**': #this runs as default for any branch not elsewhere defined
+      - step:
+          caches:
+            - docker
+          services:
+            - docker
+          script:
+            - curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose
+            - chmod +x /usr/local/bin/docker-compose
+            - mkdir deployment/settings/secrets
+            - echo $SECRETS > deployment/settings/secrets/app.json
+            - echo $GCP_CREDENTIALS > deployment/client.json
+            - mkdir test-results
+            - docker-compose run -T test
+            - docker-compose down
+  default:
+    - step:
+        caches:
+          - docker
+        services:
+          - docker
+        script:
+          - echo $PUSH_CREDENTIALS > client.json
+          - docker login -u _json_key -p "$(cat client.json)" https://gcr.io
+          - rm client.json
+          - '[ -z "$SERVICE_NAME" ] && export SERVICE_NAME=$BITBUCKET_REPO_SLUG'
+          - export IMAGE_NAME=$SERVICE_NAME:latest
+          - export BITBUCKET_COMMIT_SHORT=$(echo $BITBUCKET_COMMIT | cut -c1-7)
+          - export IMAGE_TAG=$(echo $BITBUCKET_COMMIT_SHORT-$BITBUCKET_BRANCH-$(date -u +%Y%m%d-%H%M) | sed "s#/#-#g")
+          - docker build -t $IMAGE_NAME .
+          - docker tag $IMAGE_NAME gcr.io/$STAGING_PROJECT_ID/$SERVICE_NAME:$IMAGE_TAG
+          - docker tag $IMAGE_NAME gcr.io/$STAGING_PROJECT_ID/$SERVICE_NAME:$BITBUCKET_COMMIT
+          - docker push gcr.io/$STAGING_PROJECT_ID/$SERVICE_NAME:$IMAGE_TAG
+          - docker push gcr.io/$STAGING_PROJECT_ID/$SERVICE_NAME:$BITBUCKET_COMMIT
+  branches:
+    master:
+      - step:
+          caches:
+            - docker
+          services:
+            - docker
+          script:
+            - echo $PUSH_CREDENTIALS > client.json
+            - export BASE64_PUSH_CREDENTIALS=$(echo $PUSH_CREDENTIALS | base64)
+            - docker login -u _json_key -p "$(cat client.json)" https://gcr.io
+            - rm client.json
+            - '[ -z "$SERVICE_NAME" ] && export SERVICE_NAME=$BITBUCKET_REPO_SLUG'
+            - export IMAGE_NAME=$SERVICE_NAME:latest
+            - export BITBUCKET_COMMIT_SHORT=$(echo $BITBUCKET_COMMIT | cut -c1-7)
+            - export IMAGE_TAG=$(echo $BITBUCKET_COMMIT_SHORT-$BITBUCKET_BRANCH-$(date -u +%Y%m%d-%H%M) | sed "s#/#-#g")
+            - docker build -t $IMAGE_NAME .
+            - docker tag $IMAGE_NAME gcr.io/$PRODUCTION_PROJECT_ID/$SERVICE_NAME:$IMAGE_TAG
+            - docker tag $IMAGE_NAME gcr.io/$PRODUCTION_PROJECT_ID/$SERVICE_NAME:$BITBUCKET_COMMIT
+            - docker tag $IMAGE_NAME gcr.io/$PRODUCTION_PROJECT_ID/$SERVICE_NAME:latest
+            - docker tag $IMAGE_NAME gcr.io/$CD_PROJECT_ID/$SERVICE_NAME:$IMAGE_TAG
+            - docker tag $IMAGE_NAME gcr.io/$CD_PROJECT_ID/$SERVICE_NAME:latest
+            - docker push gcr.io/$PRODUCTION_PROJECT_ID/$SERVICE_NAME:$IMAGE_TAG
+            - docker push gcr.io/$PRODUCTION_PROJECT_ID/$SERVICE_NAME:$BITBUCKET_COMMIT
+            - docker push gcr.io/$PRODUCTION_PROJECT_ID/$SERVICE_NAME:latest
+            - docker push gcr.io/$CD_PROJECT_ID/$SERVICE_NAME:$IMAGE_TAG
+            - docker push gcr.io/$CD_PROJECT_ID/$SERVICE_NAME:latest
+            - pipe: atlassian/google-cloud-storage-deploy:0.3.7
+              variables:
+                KEY_FILE: '${BASE64_PUSH_CREDENTIALS}' # base64 encoded Key file for a Google service account.
+                PROJECT: '${STAGING_PROJECT_ID}'
+                BUCKET: '${STAGING_HELM_VALUES_BUCKET}/${SERVICE_NAME}'
+                SOURCE: 'deployment/kubernetes/qa/**'
+            - pipe: atlassian/google-cloud-storage-deploy:0.3.7
+              variables:
+                KEY_FILE: '${BASE64_PUSH_CREDENTIALS}' # base64 encoded Key file for a Google service account.
+                PROJECT: '${PRODUCTION_PROJECT_ID}'
+                BUCKET: '${PRODUCTION_HELM_VALUES_BUCKET}/${SERVICE_NAME}'
+                SOURCE: 'deployment/kubernetes/prod/**'
+
+definitions:
+  services:
+    docker:
+      memory: 7168
