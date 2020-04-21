@@ -10,3 +10,4 @@ def create_server(spec_dir, sync: bool = False, port=8080, debug=False):
     for spec in os.listdir(spec_dir):
         app.add_api(specification=spec, validate_responses=debug)
     return app
+
