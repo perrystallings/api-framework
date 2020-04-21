@@ -19,7 +19,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     entry_points={
-        'console_scripts': ['create_api=funniest.setup.command_line:main'],
+        'console_scripts': ['create_api=framework.core.setup.command_line:main'],
     },
     python_requires='>=3.6',
     install_requires=[
