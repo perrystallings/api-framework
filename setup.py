@@ -5,7 +5,7 @@ import setuptools
 
 setuptools.setup(
     name="adara-framework",  # Replace with your own username
-    version="0.0.1",
+    version="0.0.2",
     author="DOT",
     author_email="dot@adara.com",
     description="An API framework for simplified development",
