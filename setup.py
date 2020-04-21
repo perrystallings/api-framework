@@ -29,7 +29,7 @@ setuptools.setup(
         "gunicorn>=20.0.4,<21",
         "aiohttp_jinja2>=1.2.0,<2",
         "python-jose[cryptography]>=3.0.1,<4",
-        "requests[security]>=2.7.0,<3",
+        "auth[security]>=2.7.0,<3",
 
     ]
 )

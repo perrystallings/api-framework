@@ -1,7 +1,7 @@
 directories = [
     './app',
-    './app/schema',
-    './app/schema',
+    './app/schemas',
+    './app/schemas',
 ]
 
 
