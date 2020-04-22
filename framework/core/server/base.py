@@ -1,6 +1,7 @@
 def create_server(spec_dir, port=8080, debug=False):
     import connexion
     import os, yaml
+
     app = connexion.FlaskApp(__name__, port=port, specification_dir=spec_dir, debug=debug)
 
     for spec in os.listdir(spec_dir):

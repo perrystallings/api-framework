@@ -4,8 +4,8 @@ import setuptools
 #     long_description = fh.read()
 
 setuptools.setup(
-    name="adara-framework-perrystallings",  # Replace with your own username
-    version="0.0.2",
+    name="adara-framework",  # Replace with your own username
+    version="0.0.3",
     author="DOT",
     author_email="dot@adara.com",
     description="An API framework for simplified development",
