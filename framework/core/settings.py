@@ -1,7 +1,7 @@
 __app_settings__ = None
 
 
-def load_app_settings():
+def get_app_settings():
     import os, json
     from os import path
     global __app_settings__

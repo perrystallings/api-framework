@@ -40,3 +40,9 @@ paths:
                     example: 86400
                   scope:
                     type: string
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+      x-basicInfoFunc: routes.core.auth.verify_auth

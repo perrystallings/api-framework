@@ -2,7 +2,7 @@ FROM python:3.8.2-alpine3.11
 
 EXPOSE 8080 8081 443
 
-RUN apk update && apk add gcc musl-dev libffi-dev libressl-dev bash build-base openrc nginx
+RUN apk update && apk add gcc musl-dev libffi-dev libressl-dev bash build-base openrc nginx git
 
 RUN mkdir /apps && mkdir /apps/deployment
 

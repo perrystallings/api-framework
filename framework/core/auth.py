@@ -175,3 +175,6 @@ def handle_token_request(user, body):
         json=js
     )
     return js, status_code
+
+def verify_auth(username, password, required_scopes=None):
+    return {'sub': username, 'scope': ''}
