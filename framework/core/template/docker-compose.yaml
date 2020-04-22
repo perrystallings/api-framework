@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash /apps/deployment/startup/app.sh
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./deployment/settings/env/:/apps/settings/env/
+      - ./deployment/settings/secrets/:/apps/settings/secrets/
+      - ./deployment/conf:/apps/deployment/conf/
+  test:
+    image: local
+    command: bash /apps/deployment/startup/test.sh
+    depends_on:
+      - web
+    volumes:
+      - ./deployment/settings/env:/apps/settings/env
+      - ./deployment/settings/secrets:/apps/settings/secrets
+      - ./deployment/settings/test:/apps/settings/test

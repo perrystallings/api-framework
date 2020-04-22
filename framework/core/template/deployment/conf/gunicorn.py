@@ -7,7 +7,6 @@ loglevel = 'info'
 timeout = 30
 user = 0
 spew = False
-worker_class = 'aiohttp.GunicornUVLoopWebWorker'
 
 
 def log_traceback(worker):

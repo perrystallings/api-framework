@@ -1,0 +1,4 @@
+files/*
+.idea/*
+deployment/client.json
+deployment/settings/secrets/*
