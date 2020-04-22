@@ -1,2 +1,3 @@
 recursive-include framework/core/template/* *
 include framework/core/server/schemas/*.yaml
+include framework/core/template/*
