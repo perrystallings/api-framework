@@ -25,7 +25,7 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=[
         "connexion[swagger-ui]>=2.6.0",
-        "gunicorn>=20.0.4",
+        "gunicorn[gevent]>=20.0.4",
         "python-jose[cryptography]>=3.0.1",
         "requests[security]>=2.7.0",
         "pytest>=5.4.1",
