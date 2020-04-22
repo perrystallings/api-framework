@@ -45,4 +45,4 @@ components:
     basic:
       type: http
       scheme: basic
-      x-basicInfoFunc: routes.core.auth.verify_auth
+      x-basicInfoFunc: framework.core.auth.verify_auth
