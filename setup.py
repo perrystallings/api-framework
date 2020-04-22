@@ -4,7 +4,7 @@ import setuptools
 #     long_description = fh.read()
 
 setuptools.setup(
-    name="adara-framework",  # Replace with your own username
+    name="adara-framework-core",  # Replace with your own username
     version="0.0.4",
     author="DOT",
     author_email="dot@adara.com",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     include_package_data=True,
     url="https://bitbucket.org/adarainc/framework-base",
-    packages=setuptools.find_packages(),
+    packages=['framework.core'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
