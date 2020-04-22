@@ -28,5 +28,7 @@ setuptools.setup(
         "gunicorn>=20.0.4",
         "python-jose[cryptography]>=3.0.1",
         "requests[security]>=2.7.0",
+        "pytest>=5.4.1",
+        "pytest-cov>=2.8.1",
     ]
 )
