@@ -7,11 +7,11 @@ servers:
 paths:
   /example:
     post:
-      operationId: routes.api.v1.example.post_json_example
+      operationId: framework.core.template.app.routes.v1.example.post_json_example
       summary: Sample json body post request that triggers a backend task
       security:
-      - oauth2:
-        - post:json
+        - oauth2:
+            - post:json
       requestBody:
         content:
           application/json:
@@ -32,7 +32,7 @@ paths:
                     name:
                       type: string
               required:
-              - sub_object
+                - sub_object
       responses:
         200:
           description: Successfully returned list of intel scores
@@ -57,7 +57,7 @@ components:
   securitySchemes:
     oauth2:
       type: oauth2
-      x-tokenInfoFunc: routes.core.auth.verify_token
+      x-tokenInfoFunc: framework.core.auth.verify_token
       flows:
         clientCredentials:
           tokenUrl: /auth/v2/oauth/token

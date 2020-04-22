@@ -3,7 +3,7 @@ info:
   title: Auth Apis
   version: '2.0'
 servers:
-  - url: /auth/v2/
+  - url: /auth/v1/
 paths:
   /oauth/token:
     post:

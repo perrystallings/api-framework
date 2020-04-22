@@ -1,4 +1,5 @@
-from framework.core.server.base import create_server
+from framework.core.server import create_server
+import os
 
-app = create_server(spec_dir='/apps/app/schemas/')
+app = create_server(spec_dir=os.path.join(os.path.abspath(__file__).replace('server.py', ''), './schemas/'))
 application = app.app
