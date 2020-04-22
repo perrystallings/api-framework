@@ -21,6 +21,6 @@ RUN mkdir /apps/files && \
     mkdir /apps/settings/test
 
 RUN chmod +x /apps/deployment/startup/app.sh && \
-    chmod +x /apps/deployment/startup/test.sh && \
+    chmod +x /apps/deployment/startup/test.sh
 
 WORKDIR /apps/app
