@@ -26,6 +26,6 @@ setuptools.setup(
         "connexion[swagger-ui]>=2.6.0",
         "gunicorn>=20.0.4",
         "python-jose[cryptography]>=3.0.1",
-        "auth[security]>=2.7.0",
+        "requests[security]>=2.7.0",
     ]
 )
