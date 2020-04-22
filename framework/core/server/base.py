@@ -12,3 +12,4 @@ def create_server(spec_dir, port=8080, debug=False):
             spec = yaml.safe_load(f)
             app.add_api(specification=spec, validate_responses=debug)
     return app
+
