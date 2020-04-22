@@ -11,6 +11,7 @@ setuptools.setup(
     description="An API framework for simplified development",
     long_description="Sample",
     long_description_content_type="text/markdown",
+    include_package_data=True,
     url="https://bitbucket.org/adarainc/framework-base",
     packages=setuptools.find_packages(),
     classifiers=[
