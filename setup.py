@@ -4,7 +4,7 @@ import setuptools
 #     long_description = fh.read()
 
 setuptools.setup(
-    name="adara-framework",  # Replace with your own username
+    name="adara-framework-perrystallings",  # Replace with your own username
     version="0.0.2",
     author="DOT",
     author_email="dot@adara.com",
@@ -23,13 +23,9 @@ setuptools.setup(
     },
     python_requires='>=3.6',
     install_requires=[
-        "connexion[swagger-ui]>=2.6.0,<3",
-        "aiohttp>=3.6.2<4",
-        "uvicorn>=0.11.3,<1",
-        "gunicorn>=20.0.4,<21",
-        "aiohttp_jinja2>=1.2.0,<2",
-        "python-jose[cryptography]>=3.0.1,<4",
-        "auth[security]>=2.7.0,<3",
-
+        "connexion[swagger-ui]>=2.6.0",
+        "gunicorn>=20.0.4",
+        "python-jose[cryptography]>=3.0.1",
+        "auth[security]>=2.7.0",
     ]
 )

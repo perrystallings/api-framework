@@ -1,0 +1,63 @@
+openapi: 3.0.0
+info:
+  title: Example API
+  version: 1.0.0
+servers:
+  - url: /api/v1/
+paths:
+  /example:
+    post:
+      operationId: routes.api.v1.example.post_json_example
+      summary: Sample json body post request that triggers a backend task
+      security:
+      - oauth2:
+        - post:json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                array:
+                  type: array
+                  items:
+                    type: string
+                string:
+                  type: string
+                sub_object:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+              required:
+              - sub_object
+      responses:
+        200:
+          description: Successfully returned list of intel scores
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  active:
+                    description: feature flag indicating that the feature endpoint is interactive
+                    type: boolean
+                  response:
+                    type: object
+                    properties:
+                      created:
+                        description: unix timestamp of file upload time in seconds
+                        type: integer
+                      job_id:
+                        description: unique id for the request
+                        type: string
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      x-tokenInfoFunc: routes.core.auth.verify_token
+      flows:
+        clientCredentials:
+          tokenUrl: /auth/v2/oauth/token
