@@ -24,7 +24,7 @@ def get_request_access_token():
     return token
 
 
-def safe_json_request(method, url, retry=False, **kwargs):
+def safe_json_request(method, url, **kwargs):
     """Convenience function for calling external APIs to simplify error handling.
 
     :param method: HTTP methond (GET, POST, PUT, etc.)
@@ -32,31 +32,37 @@ def safe_json_request(method, url, retry=False, **kwargs):
     :param kwargs: Additional parameters. See requests.request for details.
     :return: tuple of status_code and json body as a python dict
     """
-    import requests
-    from requests.exceptions import ConnectionError, HTTPError
-    from logging import getLogger
+    from tenacity import retry, stop_after_attempt, before_log
+    from requests import HTTPError, ConnectionError
+    from logging import getLogger, WARNING
+    import json
     logger = getLogger()
-    js = dict()
     status_code = None
+    js = dict()
+
+    @retry(stop=stop_after_attempt(3), reraise=True, before=before_log(logger=logger, log_level=WARNING))
+    def make_request():
+        import requests
+
+        from requests.exceptions import HTTPError
+        r = requests.request(method=method, url=url, **kwargs)
+        if r.status_code >= 500:
+            raise HTTPError(
+                json.dumps(dict(status_code=r.status_code, response=format_response_body(response=r)))
+            )
+        return r
+
     try:
-        response = requests.request(method=method, url=url, **kwargs)
+        response = make_request()
     except ConnectionError as exc:
-        logger.error(exc)
+        pass
+    except HTTPError as exc:
+        resp = json.loads(exc.args[0])
+        status_code = resp['status_code']
+        js = resp['response']
     else:
         status_code = response.status_code
-        logger.info(
-            dict(method=method, url=url, status_code=response.status_code, elapsed=response.elapsed))
-        try:
-            response.raise_for_status()
-        except HTTPError as exc:
-            if response.status_code >= 500 and not retry:
-                status_code, js = safe_json_request(method=method, url=url, retry=True, **kwargs)
-            else:
-                logger.error(exc)
-                js = format_response_body(response=response)
-                logger.error(js)
-        else:
-            js = format_response_body(response=response)
+        js = format_response_body(response=response)
 
     return status_code, js
 
@@ -66,8 +72,5 @@ def format_response_body(response):
     try:
         js = response.json()
     except ValueError:
-        if callable(response.text):
-            js['content'] = response.text()
-        if callable(response.text):
-            js['content'] = response.text
+        js['content'] = response.text
     return js
