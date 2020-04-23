@@ -9,9 +9,9 @@ paths:
     post:
       operationId: framework.core.template.app.routes.v1.example.post_json_example
       summary: Sample json body post request that triggers a backend task
-      security:
-        - oauth2:
-            - post:json
+#      security:
+#        - oauth2:
+#            - post:json
       requestBody:
         content:
           application/json:
@@ -53,11 +53,11 @@ paths:
                       job_id:
                         description: unique id for the request
                         type: string
-components:
-  securitySchemes:
-    oauth2:
-      type: oauth2
-      x-tokenInfoFunc: framework.core.auth.verify_token
-      flows:
-        clientCredentials:
-          tokenUrl: /auth/v2/oauth/token
+#components:
+#  securitySchemes:
+#    oauth2:
+#      type: oauth2
+#      x-tokenInfoFunc: framework.auth.oauth.verify_token
+#      flows:
+#        clientCredentials:
+#          tokenUrl: /auth/v2/oauth/token
