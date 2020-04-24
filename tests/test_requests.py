@@ -93,3 +93,8 @@ def test_request_timeout_return_code_empty_dict(request_methods):
     status_code, js = safe_json_request(method=request_methods['response'], url=url)
     assert status_code is None
     assert js == dict()
+
+
+def test_no_request_headers():
+    from framework.core.requests import get_request_headers
+    assert get_request_headers() is None

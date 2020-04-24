@@ -7,15 +7,6 @@ def get_request_headers():
     return headers
 
 
-def generate_oauth_headers(access_token: str) -> dict:
-    """Convenience function to generate oauth stand authorization header
-
-    :param access_token: Oauth access token
-    :return: Request headers
-    """
-    return {'Authorization': 'Bearer ' + access_token}
-
-
 def get_request_access_token():
     headers = get_request_headers()
     token = None

@@ -1,23 +1,27 @@
 __app_settings__ = None
 
 
-def get_app_settings():
+def get_app_settings(env_folder=None):
     import os, json
     from os import path
-    global __app_settings__
     from framework.core.common import generate_random_id
     import logging
+
+    global __app_settings__
+    folder = os.getenv('ENV_FOLDER', '/apps/settings/')
+    if env_folder is not None:
+        folder = env_folder
     if __app_settings__ is None:
         app_settings = dict()
-        env_folder = os.getenv('ENV_FOLDER', '/apps/settings/')
 
-        for root, folder, files in os.walk(env_folder):
+        for root, dirs, files in os.walk(folder, topdown=True):
+            dirs.sort()
             for file in files:
-                local_path = path.join(env_folder, '{0}/{1}.json'.format(folder, file))
+                local_path = path.join(folder, '{0}/{1}'.format(root, file))
                 try:
                     with open(local_path, 'rt') as f:
                         app_settings.update(json.load(f))
-                except (IOError, json.JSONDecodeError) as e:
+                except json.JSONDecodeError as e:
                     logging.error(local_path)
                     raise e
         prefix = ''

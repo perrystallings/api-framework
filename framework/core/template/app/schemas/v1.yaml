@@ -3,7 +3,7 @@ info:
   title: Example API
   version: 1.0.0
 servers:
-  - url: /api/v1/
+  - url: /v1/
 paths:
   /example:
     post:
