@@ -9,9 +9,9 @@ paths:
     post:
       operationId: framework.core.template.app.routes.v1.example.post_json_example
       summary: Sample json body post request that triggers a backend task
-#      security:
-#        - oauth2:
-#            - post:json
+      #      security:
+      #        - oauth2:
+      #            - post:json
       requestBody:
         content:
           application/json:

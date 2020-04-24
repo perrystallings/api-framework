@@ -1,9 +1,20 @@
-def create_server(spec_dir, port=8080, debug=False):
+def create_server(spec_dir, custom_home=None,
+                  port=8080, debug=False):
     import connexion
     import os
     import yaml
 
-    app = connexion.FlaskApp(__name__, port=port, specification_dir=spec_dir, debug=debug)
+    app = connexion.FlaskApp(
+        __name__, port=port,
+        specification_dir=spec_dir, debug=debug
+    )
+
+    @app.route('/')
+    def health_check():
+        if custom_home is not None:
+            return custom_home()
+        else:
+            return home()
 
     for spec in os.listdir(spec_dir):
         app.add_api(specification=spec, validate_responses=debug)
@@ -17,3 +28,7 @@ def create_server(spec_dir, port=8080, debug=False):
                     spec = yaml.safe_load(f)
                 app.add_api(specification=spec, validate_responses=debug)
     return app
+
+
+def home():
+    return dict(status='ok')

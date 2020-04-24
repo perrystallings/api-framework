@@ -17,5 +17,9 @@ def generate_hash_id(data):
     import json
     import uuid
     import hashlib
-    hash_id = uuid.UUID(hashlib.md5(str(json.dumps(data, sort_keys=True)).encode('utf-8')).hexdigest())
+    hash_id = uuid.UUID(
+        hashlib.md5(
+            str(json.dumps(data, sort_keys=True)).encode('utf-8')
+        ).hexdigest()
+    )
     return str(hash_id)

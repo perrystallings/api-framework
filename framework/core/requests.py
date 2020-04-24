@@ -31,7 +31,8 @@ def safe_json_request(method, url, **kwargs):
     status_code = None
     js = dict()
 
-    @retry(stop=stop_after_attempt(3), reraise=True, before=before_log(logger=logger, log_level=WARNING))
+    @retry(stop=stop_after_attempt(3), reraise=True,
+           before=before_log(logger=logger, log_level=WARNING))
     def make_request():
         import requests
 
@@ -39,13 +40,18 @@ def safe_json_request(method, url, **kwargs):
         r = requests.request(method=method, url=url, **kwargs)
         if r.status_code >= 500:
             raise HTTPError(
-                json.dumps(dict(status_code=r.status_code, response=format_response_body(response=r)))
+                json.dumps(
+                    dict(
+                        status_code=r.status_code,
+                        response=format_response_body(response=r)
+                    )
+                )
             )
         return r
 
     try:
         response = make_request()
-    except ConnectionError as exc:
+    except ConnectionError:
         pass
     except HTTPError as exc:
         resp = json.loads(exc.args[0])

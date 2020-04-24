@@ -2,8 +2,10 @@ def test_override_test_settings():
     import os
     from framework.core.settings import get_app_settings
     app_settings = get_app_settings(
-        env_folder=os.path.join(os.path.abspath(__file__).replace('/tests/test_settings.py', ''),
-                                'framework/core/template/deployment/settings'))
+        env_folder=os.path.join(
+            os.path.abspath(__file__).replace(
+                '/tests/test_settings.py', ''),
+            'framework/core/template/deployment/settings'))
     assert app_settings['environment'] == 'test'
     assert app_settings['service_name'] == 'example'
 
@@ -15,8 +17,10 @@ def test_settings_parser_raises_error():
     from framework.core.settings import get_app_settings
     pytest.raises(JSONDecodeError)
     app_settings = get_app_settings(
-        env_folder=os.path.join(os.path.abspath(__file__).replace('/tests/test_settings.py', ''),
-                                'framework/core/template/deployment/conf'))
+        env_folder=os.path.join(
+            os.path.abspath(__file__).replace('/tests/test_settings.py', ''),
+            'framework/core/template/deployment/conf')
+    )
     assert app_settings['environment'] == 'test'
     assert app_settings['service_name'] == 'example'
 
