@@ -1,7 +1,7 @@
 __app_settings__ = None
 
 
-def get_app_settings(env_folder=None):
+def get_app_settings(env_folder=None, refresh=False):
     import os
     import json
     from framework.core.common import generate_random_id
@@ -11,7 +11,7 @@ def get_app_settings(env_folder=None):
     folder = os.getenv('ENV_FOLDER', '/apps/settings/')
     if env_folder is not None:
         folder = env_folder
-    if __app_settings__ is None:
+    if __app_settings__ is None or refresh:
         app_settings = dict()
 
         for root, dirs, files in os.walk(folder, topdown=True):

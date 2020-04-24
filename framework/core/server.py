@@ -32,3 +32,9 @@ def create_server(spec_dir, custom_home=None,
 
 def home():
     return dict(status='ok')
+
+
+def say_hello():
+    from framework.core.requests import get_request_access_token
+    token = get_request_access_token()
+    return dict(response='hello {token}'.format(token=token))
