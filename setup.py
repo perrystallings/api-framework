@@ -2,7 +2,8 @@ import setuptools
 
 # with open("README.md", "r") as fh:
 #     long_description = fh.read()
-
+with open('requirements.txt') as f:
+    requirements = f.readlines()
 setuptools.setup(
     name="adara-framework-core",  # Replace with your own username
     version="0.0.4",
@@ -23,12 +24,5 @@ setuptools.setup(
         'console_scripts': ['create_api=framework.core.setup.command_line:main'],
     },
     python_requires='>=3.6',
-    install_requires=[
-        "connexion[swagger-ui]>=2.6.0",
-        "gunicorn[gevent]>=20.0.4",
-        "python-jose[cryptography]>=3.0.1",
-        "requests[security]>=2.7.0",
-        "pytest>=5.4.1",
-        "pytest-cov>=2.8.1",
-    ]
+    install_requires=requirements
 )
