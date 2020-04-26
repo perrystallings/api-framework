@@ -15,6 +15,7 @@ setuptools.setup(
     include_package_data=True,
     url="https://bitbucket.org/adarainc/framework-base",
     packages=['framework.core'],
+    
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
